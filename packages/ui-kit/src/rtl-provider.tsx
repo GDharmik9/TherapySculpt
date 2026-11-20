@@ -1,0 +1,2 @@
+import type { PropsWithChildren } from 'react';
+export function RtlProvider({ locale, children }: PropsWithChildren<{ locale: 'en' | 'ar' }>) { return <div dir={locale === 'ar' ? 'rtl' : 'ltr'} lang={locale} data-locale={locale}>{children}</div>; }

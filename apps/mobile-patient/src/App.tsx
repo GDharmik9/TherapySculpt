@@ -1,0 +1,2 @@
+import { SafeAreaView, Text, View } from 'react-native';
+export default function App() { return <SafeAreaView><View><Text>TherapySculpt / ثيرابي سكولبت</Text><Text>Offline safety plan and daily check-in shell.</Text><Text>خطة أمان غير متصلة بالإنترنت وتسجيل يومي.</Text></View></SafeAreaView>; }

@@ -1,0 +1,1 @@
+export default function MalaffiSync() { return <main><h1>Malaffi FHIR sync / مزامنة ملفي</h1><p>Outbound FHIR R4 inspection placeholder; export requires Tier C consent.</p></main>; }

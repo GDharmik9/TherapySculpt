@@ -1,0 +1,1 @@
+export default function CalmMind() { return <main><h1>Calm Mind / العقل الهادئ</h1><p>Box breathing, 4-7-8 breathing, grounding, and CBT micro-modules.</p></main>; }

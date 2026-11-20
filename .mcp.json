@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "cw-omni-agents-extension": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "c:\\Users\\GDhar\\.vscode\\extensions\\amazonwebservices.amazon-cloudwatch-omni-1.1.7\\out\\mcp-server\\mcp-proxy.js",
+        "--workspace",
+        "d:\\projects-bhim\\TherapySculpt",
+        "--session-file",
+        "c:\\Users\\GDhar\\AppData\\Roaming\\Code\\User\\globalStorage\\amazonwebservices.amazon-cloudwatch-omni\\mcp-sessions\\a50a2013b133fe740873cbb0ef28d51c429f9acee401437553525922daf4a202.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+import type { ReactNode } from 'react';
+export function EmergencyBanner({ onCall }: { onCall?: () => void }) { return <aside role="alert" style={{ border: '2px solid #b91c1c', padding: 16, background: '#fff7ed' }}><strong>Immediate safety support / دعم السلامة الفوري</strong><p>If you may hurt yourself, call UAE emergency services now: 999.</p><button type="button" onClick={onCall}>Call 999 / اتصل بـ999</button></aside>; }
+export function Card({ title, children }: { title: string; children: ReactNode }) { return <section style={{ border: '1px solid #ddd', borderRadius: 12, padding: 16 }}><h2>{title}</h2>{children}</section>; }

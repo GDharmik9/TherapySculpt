@@ -1,0 +1,1 @@
+export default function TriageBoard() { return <main><h1>Triage board / لوحة الفرز</h1><p>TIER_4 alerts require human contact within 15 minutes.</p></main>; }

@@ -1,0 +1,4 @@
+-- Preserved compatibility pointer for tools that expect this filename.
+-- The complete PostgreSQL policy remains in security.postgresql.md because
+-- the workspace SQL diagnostics provider parses .sql files as SQL Server.
+-- It is intentionally not wired into Prisma migrations.

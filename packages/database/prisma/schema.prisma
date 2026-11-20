@@ -1,0 +1,9 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+enum UserRole { PATIENT CLINICIAN TRIAGE_NURSE ADMIN EMPLOYER HR INSURER }
+enum ConsentStatus { ACTIVE REVOKED }
+model User { id String @id @default(cuid()) emiratesId String @unique @db.VarChar(18) emiratesIdVerifiedAt DateTime? role UserRole @default(PATIENT) createdAt DateTime @default(now()) updatedAt DateTime @updatedAt consents ConsentLedger[] assessments ScreeningAssessment[] encounters ClinicalEncounter[] auditLogs AuditLog[] }
+model ConsentLedger { id String @id @default(cuid()) userId String tierASelfReflection Boolean @default(false) tierBClinicianShare Boolean @default(false) tierCPrimaryCareHie Boolean @default(false) status ConsentStatus @default(ACTIVE) fhirConsentId String? grantedAt DateTime @default(now()) revokedAt DateTime? user User @relation(fields: [userId], references: [id]) }
+model ScreeningAssessment { id String @id @default(cuid()) userId String phq9Score Int gad7Score Int scoffScore Int signalConfidence Float careTier String criticalFlag Boolean createdAt DateTime @default(now()) user User @relation(fields: [userId], references: [id]) }
+model ClinicalEncounter { id String @id @default(cuid()) userId String clinicianId String status String soapNote Json? createdAt DateTime @default(now()) updatedAt DateTime @updatedAt user User @relation(fields: [userId], references: [id]) }
+model AuditLog { id String @id @default(cuid()) userId String? actorId String action String resourceType String resourceId String? payloadHash String tamperHash String previousTamperHash String? retentionUntil DateTime appendOnly Boolean @default(true) createdAt DateTime @default(now()) user User? @relation(fields: [userId], references: [id]) @@index([userId, createdAt]) }

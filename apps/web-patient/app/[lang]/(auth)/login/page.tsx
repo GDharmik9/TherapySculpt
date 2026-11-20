@@ -1,0 +1,1 @@
+export default function Login() { return <main><h1>UAE PASS login / تسجيل الدخول عبر UAE PASS</h1><p>Authentication integration placeholder; verify Emirates ID before clinical access.</p></main>; }

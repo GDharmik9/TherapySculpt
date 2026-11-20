@@ -1,0 +1,5 @@
+# TherapySculpt Copilot instructions
+
+Treat `packages/clinical-core` as a safety-critical deterministic library. Do not introduce probabilistic scoring, LLM calls, diagnosis, or silent missing-answer interpolation. Crisis matches and PHQ-9 Q9 positivity always take precedence over normal navigation. Keep patient, clinician, and administration roles separated; block `EMPLOYER` and `INSURER` from individual health data. All user-facing patient content must have English and Arabic variants and support RTL. This repository is a demo scaffold requiring professional review.
+
+Preservation thumb rule: never remove existing code, docs, configuration, or features; keep unused items aside. Move or copy superseded material to `docs/archive/` with a dated note only after explicit approval. Each cycle follows inspect -> plan -> additive change -> test -> docs -> review.

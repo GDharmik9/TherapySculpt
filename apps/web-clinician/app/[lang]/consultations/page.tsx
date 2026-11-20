@@ -1,0 +1,1 @@
+export default function Consultations() { return <main><h1>Consultations / الاستشارات</h1><p>SOAP documentation, ICD-10-CM and DoH formulary placeholders.</p></main>; }

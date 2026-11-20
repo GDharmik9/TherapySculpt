@@ -1,0 +1,3 @@
+# Deployment-reviewed PostgreSQL policies
+
+`security.postgresql.md` contains the complete additive deployment artifact for PostgreSQL row-level security, the employer/insurer firewall, and append-only audit protection. `security.sql` is retained as a compatibility pointer because the workspace diagnostics provider parses `.sql` files as SQL Server. Neither file is executed automatically by Prisma. A database owner and security reviewer must adapt role names, session claims, migration ordering, and operational break-glass controls before deployment.

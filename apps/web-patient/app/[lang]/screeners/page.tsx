@@ -1,0 +1,1 @@
+export default function Screeners() { return <main><h1>Screeners / الفحوصات</h1><p>PHQ-9, GAD-7, and SCOFF are educational screens, not diagnoses.</p></main>; }

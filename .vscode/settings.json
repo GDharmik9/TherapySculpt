@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "packages/database/prisma/policies/*.sql": "postgresql"
+},
+"codescene.authToken": "pat_eyJpZCI6OTIyMDUsInJhbmQiOiJzY1VDbDZpS250RHlPWVFHSG4wZjhndVBoV0EyUGNCbiJ9"
+}

@@ -1,0 +1,1 @@
+export default function AdminHome() { return <main><h1>Governance / الحوكمة</h1><p>Audit ledger and fairness KPI shell. No individual wellbeing data is available to commercial roles.</p><nav><a href="/en/audit-ledger">Audit ledger</a> · <a href="/en/fairness-kpis">Fairness KPIs</a></nav></main>; }

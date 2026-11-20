@@ -1,0 +1,1 @@
+export default function SafetyPlan() { return <main><h1>Stanley-Brown Safety Plan / خطة الأمان</h1><p>Keep this plan available offline. If there is immediate danger, call UAE emergency services: 999.</p></main>; }

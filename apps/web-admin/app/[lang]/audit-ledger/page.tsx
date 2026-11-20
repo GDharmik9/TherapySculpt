@@ -1,0 +1,1 @@
+export default function AuditLedger() { return <main><h1>25-year audit ledger / سجل التدقيق لمدة 25 عاماً</h1><p>Append-only, chained tamper hashes and retention metadata.</p></main>; }

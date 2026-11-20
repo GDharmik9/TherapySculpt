@@ -1,0 +1,1 @@
+export default function FairnessKpis() { return <main><h1>Fairness KPIs / مؤشرات الإنصاف</h1><p>Aggregated demographic disparity telemetry only.</p></main>; }

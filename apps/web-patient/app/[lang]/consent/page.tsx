@@ -1,0 +1,1 @@
+export default function Consent() { return <main><h1>Granular consent / الموافقة التفصيلية</h1><ul><li>Tier A: private self-reflection</li><li>Tier B: clinician sharing</li><li>Tier C: primary-care HIE</li></ul></main>; }

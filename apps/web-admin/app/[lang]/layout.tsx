@@ -1,0 +1,2 @@
+import type { ReactNode } from 'react';
+export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ lang: string }> }) { const { lang } = await params; const locale = lang === 'ar' ? 'ar' : 'en'; return <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}><body>{children}</body></html>; }

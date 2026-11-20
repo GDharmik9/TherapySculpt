@@ -1,0 +1,1 @@
+export default function ComorbidityBrief() { return <main><h1>Comorbidity brief / ملخص الأمراض المصاحبة</h1><p>Visible only with Tier B/C consent and never to employers or insurers.</p></main>; }

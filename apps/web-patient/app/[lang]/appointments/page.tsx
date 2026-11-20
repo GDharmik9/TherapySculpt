@@ -1,0 +1,1 @@
+export default function Appointments() { return <main><h1>Appointments / المواعيد</h1><p>Book an asynchronous or video consultation with a human clinician.</p></main>; }

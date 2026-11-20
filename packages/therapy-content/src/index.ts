@@ -1,0 +1,8 @@
+export interface BilingualText { en: string; ar: string; }
+export interface CbtModule { id: string; title: BilingualText; objective: BilingualText; activities: BilingualText[]; disclaimer: BilingualText; }
+export const cbtModules: CbtModule[] = [
+  { id: 'thought-traps', title: { en: 'Notice thought traps', ar: 'ملاحظة فخاخ التفكير' }, objective: { en: 'Name a thought without treating it as a fact.', ar: 'تسمية الفكرة دون اعتبارها حقيقة.' }, activities: [{ en: 'Write the situation, thought, feeling, and one balanced alternative.', ar: 'اكتب الموقف والفكرة والشعور وبديلًا متوازنًا واحدًا.' }], disclaimer: { en: 'Self-guided education is not therapy or diagnosis.', ar: 'التثقيف الذاتي ليس علاجاً أو تشخيصاً.' } },
+  { id: 'behavioral-activation', title: { en: 'Small meaningful actions', ar: 'خطوات صغيرة ذات معنى' }, objective: { en: 'Choose one manageable action aligned with your values.', ar: 'اختر خطوة بسيطة تتوافق مع قيمك.' }, activities: [{ en: 'Plan a five-minute action and notice what changes.', ar: 'خطط لخطوة مدتها خمس دقائق ولاحظ ما يتغير.' }], disclaimer: { en: 'Pause and seek professional help if distress increases.', ar: 'توقف واطلب مساعدة متخصصة إذا زاد الضيق.' } }
+];
+export const calmMind = { breathing: [{ id: 'box-breathing', name: { en: 'Box breathing', ar: 'تنفس الصندوق' }, phasesSeconds: [4, 4, 4, 4] }, { id: '478', name: { en: '4-7-8 breathing', ar: 'تنفس 4-7-8' }, phasesSeconds: [4, 7, 8] }], grounding54321: { en: 'Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, and 1 you taste.', ar: 'اذكر 5 أشياء تراها، و4 تشعر بها، و3 تسمعها، و2 تشمها، وشيئاً واحداً تتذوقه.' } };
+export * from './resources.js';

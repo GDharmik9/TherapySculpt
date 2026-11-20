@@ -1,0 +1,13 @@
+{
+  "ui": "tui",
+  "tasks": {
+    "build": { "dependsOn": ["^build"], "inputs": ["$TURBO_DEFAULT$", ".env*"], "outputs": [".next/**", "!.next/cache/**", "dist/**"] },
+    "typecheck": { "dependsOn": ["^build"] },
+    "lint": { "dependsOn": ["^lint"] },
+    "test": { "dependsOn": ["^build"], "inputs": ["$TURBO_DEFAULT$", "src/**/*.test.ts"] },
+    "db:generate": { "cache": false },
+    "db:migrate": { "cache": false },
+    "dev": { "cache": false, "persistent": true },
+    "clean": { "cache": false }
+  }
+}
