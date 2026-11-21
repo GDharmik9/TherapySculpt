@@ -6,13 +6,14 @@ coverage/
 .env
 .env.*
 !.env.example
+!.env.production.example
 *.log
 *.tsbuildinfo
 .omni/
 .claude/
-.github/
 .cursor/
 .kiro/
 .agents/
 .env.omni
 .omni/collector.json
+.github/

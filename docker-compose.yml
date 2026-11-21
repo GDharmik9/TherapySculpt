@@ -1,0 +1,216 @@
+# ==============================================================================
+# TherapySculpt - Production Local Stack (Docker Compose)
+# Stack: PostgreSQL 16 | Redis 7 | Fastify API | Next.js 15 Web Apps | Workers
+# Target Region Architecture: UAE North (uaenorth)
+# ==============================================================================
+
+name: therapysculpt-stack
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Relational Database: PostgreSQL 16
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: ts-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tsadmin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ts_secure_pass_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-therapysculpt}
+      TZ: Asia/Dubai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tsadmin} -d ${POSTGRES_DB:-therapysculpt}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 2. In-Memory Cache & Message Broker: Redis 7
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: ts-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 3. Backend Fastify API Server
+  # ----------------------------------------------------------------------------
+  api-server:
+    build:
+      context: .
+      dockerfile: apps/api-server/Dockerfile
+    container_name: ts-api-server
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      HOST: 0.0.0.0
+      UAE_REGION: uaenorth
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tsadmin}:${POSTGRES_PASSWORD:-ts_secure_pass_2026}@postgres:5432/${POSTGRES_DB:-therapysculpt}?sslmode=disable
+      REDIS_URL: redis://redis:6379
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:3002
+      CRISIS_DISPATCH_WEBHOOK_URL: http://worker-crisis-dispatch:4000/webhook
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 4. Patient Web Portal (Next.js 15)
+  # ----------------------------------------------------------------------------
+  web-patient:
+    build:
+      context: .
+      dockerfile: apps/web-patient/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000
+        NEXT_PUBLIC_UAE_REGION: uaenorth
+    container_name: ts-web-patient
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      UAE_REGION: uaenorth
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-server
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 5. Clinician Web Portal (Next.js 15)
+  # ----------------------------------------------------------------------------
+  web-clinician:
+    build:
+      context: .
+      dockerfile: apps/web-clinician/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000
+        NEXT_PUBLIC_UAE_REGION: uaenorth
+    container_name: ts-web-clinician
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      UAE_REGION: uaenorth
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+    ports:
+      - "3001:3000"
+    depends_on:
+      - api-server
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 6. Admin & Clinical Governance Portal (Next.js 15)
+  # ----------------------------------------------------------------------------
+  web-admin:
+    build:
+      context: .
+      dockerfile: apps/web-admin/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:4000
+        NEXT_PUBLIC_UAE_REGION: uaenorth
+    container_name: ts-web-admin
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+      UAE_REGION: uaenorth
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+    ports:
+      - "3002:3000"
+    depends_on:
+      - api-server
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 7. Background Worker: Longitudinal Scoring
+  # ----------------------------------------------------------------------------
+  worker-scoring:
+    build:
+      context: .
+      dockerfile: services/worker-scoring/Dockerfile
+    container_name: ts-worker-scoring
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      UAE_REGION: uaenorth
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tsadmin}:${POSTGRES_PASSWORD:-ts_secure_pass_2026}@postgres:5432/${POSTGRES_DB:-therapysculpt}?sslmode=disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - therapysculpt-net
+
+  # ----------------------------------------------------------------------------
+  # 8. Background Worker: Human Crisis Dispatch (Gate 2 Escalations)
+  # ----------------------------------------------------------------------------
+  worker-crisis-dispatch:
+    build:
+      context: .
+      dockerfile: services/worker-crisis-dispatch/Dockerfile
+    container_name: ts-worker-crisis-dispatch
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      UAE_REGION: uaenorth
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://${POSTGRES_USER:-tsadmin}:${POSTGRES_PASSWORD:-ts_secure_pass_2026}@postgres:5432/${POSTGRES_DB:-therapysculpt}?sslmode=disable
+      CRISIS_DISPATCH_WEBHOOK_URL: http://localhost:4000/webhook
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - therapysculpt-net
+
+volumes:
+  postgres_data:
+    name: ts_postgres_data
+  redis_data:
+    name: ts_redis_data
+
+networks:
+  therapysculpt-net:
+    name: ts_network
+    driver: bridge

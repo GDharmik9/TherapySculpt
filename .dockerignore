@@ -1,0 +1,44 @@
+# ==============================================================================
+# TherapySculpt - Docker Build Ignore Patterns
+# ==============================================================================
+
+# Dependencies and caches
+node_modules
+.pnpm-store
+.npm
+.yarn
+
+# Build outputs
+.next
+dist
+build
+out
+.turbo
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# Git & IDEs
+.git
+.gitignore
+.github
+.vscode
+.cursor
+.claude
+.omni
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db

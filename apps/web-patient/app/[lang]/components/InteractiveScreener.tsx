@@ -67,7 +67,7 @@ export function InteractiveScreener({ locale }: { locale: 'en' | 'ar' }) {
     setResult({ phq, gad, gate });
   }
 
-  const currentQuestion = items[current];
+  const currentQuestion = items[current] ?? items[0]!;
   return <main style={{ maxWidth: 760, margin: '0 auto', padding: 24 }}>
     <h1>{labels.title}</h1>
     <p>{labels.note}</p>
@@ -79,7 +79,7 @@ export function InteractiveScreener({ locale }: { locale: 'en' | 'ar' }) {
     <div aria-label={`${progress}% complete`} style={{ height: 10, background: '#e5e7eb', borderRadius: 999, marginBottom: 24 }}><div style={{ width: `${progress}%`, height: '100%', background: '#2563eb', borderRadius: 999 }} /></div>
     <section aria-live="polite" style={{ border: '1px solid #cbd5e1', borderRadius: 14, padding: 24 }}>
       <p><strong>{instrument}</strong> · {current + 1}/{items.length}</p>
-      <h2>{currentQuestion[locale]}</h2>
+      <h2>{isArabic ? currentQuestion[1] : currentQuestion[0]}</h2>
       <div style={{ display: 'grid', gap: 10 }}>
         {scale.map((option) => <label key={option.value} style={{ display: 'flex', gap: 10, alignItems: 'center', padding: 12, border: '1px solid #d1d5db', borderRadius: 8 }}><input type="radio" name={`question-${current}`} checked={answer === option.value} onChange={() => setAnswers((previous) => previous.map((value, index) => index === current ? option.value : value))} />{option[locale]}</label>)}
         <label style={{ display: 'flex', gap: 10, alignItems: 'center', padding: 12, border: '1px dashed #94a3b8', borderRadius: 8 }}><input type="radio" name={`question-${current}`} checked={answer === undefined} onChange={() => setAnswers((previous) => previous.map((value, index) => index === current ? undefined : value))} />{labels.skip}</label>

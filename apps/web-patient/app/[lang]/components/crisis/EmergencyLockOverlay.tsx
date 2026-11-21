@@ -12,7 +12,11 @@ export function EmergencyLockOverlay({ locale, gate }: { locale: 'en' | 'ar'; ga
   }, []);
 
   const isArabic = locale === 'ar';
-  const stepSix = createSafetyPlan().steps[5];
+  const plan = createSafetyPlan();
+  const stepSix = plan.steps[5] ?? plan.steps[0];
+  const stepSixTitle = stepSix ? stepSix.title[locale] : '';
+  const stepSixPrompt = stepSix ? (stepSix.prompts[locale][0] ?? '') : '';
+
   const text = isArabic
     ? { title: 'توقف الأمان الفوري', message: 'تم اكتشاف إشارة تتطلب دعماً بشرياً فورياً. لا تستخدم الدردشة العامة الآن.', call: 'اتصل بخدمات الطوارئ في الإمارات', sla: 'تم إخطار منسق أزمات مرخص — مهلة الاستجابة 15 دقيقة', routes: 'خيارات الدعم الفوري' }
     : { title: 'Immediate safety lock', message: 'A safety signal was detected. Human and emergency support take priority now. General navigation is locked.', call: 'Call UAE emergency services', sla: 'A licensed crisis coordinator has been notified — 15-minute response SLA', routes: 'Immediate support options' };
@@ -29,8 +33,8 @@ export function EmergencyLockOverlay({ locale, gate }: { locale: 'en' | 'ar'; ga
         {gate.emergencyRoutes.filter((route) => route.id !== 'uae-999' && route.id !== 'safety-step-6').map((route) => <div key={route.id} style={{ padding: 14, borderRadius: 10, background: '#ffedd5' }}>{route.label[locale]}<small style={{ display: 'block', marginTop: 4 }}>{isArabic ? 'تأكد من رقم المنشأة محلياً قبل الاتصال.' : 'Verify the facility number locally before calling.'}</small></div>)}
       </div>
       <section style={{ marginTop: 24, padding: 16, borderRadius: 10, background: '#fef2f2' }}>
-        <h3>{stepSix.title[locale]}</h3>
-        <p>{stepSix.prompts[locale][0]}</p>
+        <h3>{stepSixTitle}</h3>
+        <p>{stepSixPrompt}</p>
       </section>
     </div>
   </div>;
